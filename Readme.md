@@ -110,3 +110,9 @@ browsers at that point. In theory it should be awesome in Firefox,
 and should work in Safari and Opera and IE 11 with the Promise Polyfill,
 as well as whatever IE version added XmlHttpRequest rather than
 Microsoft's version.
+
+## License
+
+HTTP Promise is distributed under the MIT License. Copyright (c) 2014 Andrew Burleson.
+
+PS, if you do something neat with it, I'd love to know :)
