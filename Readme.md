@@ -67,6 +67,7 @@ response.when(status,callback) // whatever status code you want
 http.takesBow()
 
 // ^ lol that's not a real function don't try calling it.
+```
 
 ## Extension
 
