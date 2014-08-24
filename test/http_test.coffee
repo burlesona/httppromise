@@ -2,7 +2,7 @@ assert = chai.assert
 url = (path) -> "http://localhost:4567/#{path}"
 
 describe "GET Requests", ->
-  http = new HTTPHandler
+  http = new HTTPromise
   r = (path="test",params) -> http.get(url(path),params)
 
   it "should get '/test'", (done) ->
@@ -31,7 +31,7 @@ describe "GET Requests", ->
       done()
 
 describe "POST Requests", ->
-  http = new HTTPHandler
+  http = new HTTPromise
   r = (path="test",data) -> http.post(url(path),data)
 
   it "should send URL params", (done) ->
@@ -40,7 +40,7 @@ describe "POST Requests", ->
       done()
 
 describe "PUT Requests", ->
-  http = new HTTPHandler
+  http = new HTTPromise
   r = (path="test",data) -> http.put(url(path),data)
 
   it "should send URL params", (done) ->
@@ -49,7 +49,7 @@ describe "PUT Requests", ->
       done()
 
 describe "PATCH Requests", ->
-  http = new HTTPHandler
+  http = new HTTPromise
   r = (path="test",data) -> http.patch(url(path),data)
 
   it "should send URL params", (done) ->
@@ -58,7 +58,7 @@ describe "PATCH Requests", ->
       done()
 
 describe "DELETE Requests", ->
-  http = new HTTPHandler
+  http = new HTTPromise
   r = (path="test",data) -> http.delete(url(path),data)
 
   it "should delete stuff", (done) ->

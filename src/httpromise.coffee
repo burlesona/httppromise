@@ -1,6 +1,6 @@
 root = exports ? this
 
-root.HTTPRequestFormat =
+root.HTTPromiseFormat =
   json:
     headers:
       'Content-Type':'application/json'
@@ -12,7 +12,7 @@ root.HTTPRequestFormat =
       try data = JSON.parse(xhr.response)
       {data: data, xhr: xhr}
 
-class root.HTTPHandler
+class root.HTTPromise
   constructor: (config = {}) ->
     @config = config
     @type = config.type or 'json'
@@ -35,7 +35,7 @@ class root.HTTPHandler
 
 class Request
   constructor: (type,method,url,data) ->
-    format = HTTPRequestFormat[type]
+    format = HTTPromiseFormat[type]
     @promise = new Promise (fulfill,reject) ->
       request = new XMLHttpRequest
       request.onload = ->

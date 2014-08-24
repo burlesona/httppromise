@@ -4,7 +4,7 @@
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
-  root.HTTPRequestFormat = {
+  root.HTTPromiseFormat = {
     json: {
       headers: {
         'Content-Type': 'application/json',
@@ -30,8 +30,8 @@
     }
   };
 
-  root.HTTPHandler = (function() {
-    function HTTPHandler(config) {
+  root.HTTPromise = (function() {
+    function HTTPromise(config) {
       if (config == null) {
         config = {};
       }
@@ -39,7 +39,7 @@
       this.type = config.type || 'json';
     }
 
-    HTTPHandler.prototype.get = function(url, params) {
+    HTTPromise.prototype.get = function(url, params) {
       var k, q, qs, v;
       if (params) {
         q = [];
@@ -53,34 +53,34 @@
       return this.request('get', url);
     };
 
-    HTTPHandler.prototype.post = function(url, data) {
+    HTTPromise.prototype.post = function(url, data) {
       return this.request('post', url, data);
     };
 
-    HTTPHandler.prototype.put = function(url, data) {
+    HTTPromise.prototype.put = function(url, data) {
       return this.request('put', url, data);
     };
 
-    HTTPHandler.prototype.patch = function(url, data) {
+    HTTPromise.prototype.patch = function(url, data) {
       return this.request('patch', url, data);
     };
 
-    HTTPHandler.prototype["delete"] = function(url, data) {
+    HTTPromise.prototype["delete"] = function(url, data) {
       return this.request('delete', url, data);
     };
 
-    HTTPHandler.prototype.request = function(method, url, data) {
+    HTTPromise.prototype.request = function(method, url, data) {
       return new Request(this.type, method, url, data);
     };
 
-    return HTTPHandler;
+    return HTTPromise;
 
   })();
 
   Request = (function() {
     function Request(type, method, url, data) {
       var format;
-      format = HTTPRequestFormat[type];
+      format = HTTPromiseFormat[type];
       this.promise = new Promise(function(fulfill, reject) {
         var k, request, v, _ref;
         request = new XMLHttpRequest;

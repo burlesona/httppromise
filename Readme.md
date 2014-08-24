@@ -17,7 +17,7 @@ Make requests like this:
 ```
 // You can pass a type option. For now, 'json' is the only option,
 // therefore you don't have to pass anything.
-var http = new HTTPHandler({type: 'json'}); // or just new HTTPHandler;
+var http = new HTTPromise({type: 'json'}); // or just new HTTPromise;
 
 // Call an HTTP method and pass a URL!
 http.get('/whatever');
@@ -76,7 +76,7 @@ you could add a config object to define some other kind of request format.
 For instance:
 
 ```
-HTTPRequestFormat.xml = {
+HTTPromiseFormat.xml = {
   headers: {
     'Content-Type':'application/xml',
     'Accept':'application/xml'
