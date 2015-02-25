@@ -12,6 +12,16 @@ root.HTTPromiseFormat =
       try data = JSON.parse(xhr.response)
       {data: data, xhr: xhr}
 
+  formData:
+    encode: (input) ->
+      form = if typeof input is 'string'
+        document.querySelector(input)
+      else
+        input
+      new FormData(form)
+    parse: (xhr) ->
+      {data: xhr.response, xhr: xhr}
+
 class root.HTTPromise
   constructor: (config = {}) ->
     @config = config

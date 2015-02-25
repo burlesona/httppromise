@@ -29,6 +29,9 @@ put('/test')     { json({echo: parse(request.body.read)}) }
 patch('/test')   { json({echo: parse(request.body.read)}) }
 delete('/test')  { 200 }
 
+# Form Tests
+post('/formdata') { json(params) }
+
 # Status Tests
 get('/204') { 204 }
 get('/500') { 500 }
@@ -46,9 +49,14 @@ __END__
   </head>
   <body>
     <p>HTTP Request Test Page</p>
-    <script src="http.js"></script>
+    <script src="https://www.promisejs.org/polyfills/promise-6.1.0.min.js"></script>
+    <script src="httpromise.js"></script>
     <script>
-      h = new HTTPHandler
+      h = new HTTPromise
     </script>
+    <form id="test">
+      <label for="a">Test</label>
+      <input id="a" name="a" type="text" value="hello">
+    </form>
   </body>
 </html>

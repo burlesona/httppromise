@@ -69,6 +69,38 @@ http.takesBow()
 // ^ lol that's not a real function don't try calling it.
 ```
 
+## Built-In Types
+
+HTTPromise knows about two kinds of requests by default: JSON and FormData.
+If you don't specify a type, JSON is the default. You can make FormData requests
+like so:
+
+```
+var http = new HTTPromise({type: 'formData'});
+var form = document.getElementById('my-form');
+http.post('/formdata',form).then(function(data,xhr){console.log(data,xhr)});
+```
+
+The form data is generated from the second argument. You can pass a form element
+or a selector string. Note that if you input a selector it will be passed to
+`document.querySelector`, therefore only the first match will be passed on to
+`FormData`. Use a unique selector, IDs are recommended.
+
+Example HTML
+
+```html
+<form id="my-form">
+  <input name="test" type="text" value="foo">
+</form>
+```
+
+Example JS
+
+```js
+var http = new HTTPromise({type: 'formData'});
+http.post('/formdata','#my-form').then(function(data,xhr){console.log(data,xhr)});
+```
+
 ## Extension
 
 I pretty much don't care about old browsers or XML. If you DO, then
@@ -111,6 +143,11 @@ browsers at that point. In theory it should be awesome in Firefox,
 and should work in Safari and Opera and IE 11 with the Promise Polyfill,
 as well as whatever IE version added XmlHttpRequest rather than
 Microsoft's version.
+
+For development and testing I use the polyfill from PromiseJS:
+```
+<script src="https://www.promisejs.org/polyfills/promise-6.1.0.min.js"></script>
+```
 
 ## License
 

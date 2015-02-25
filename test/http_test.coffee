@@ -65,3 +65,49 @@ describe "DELETE Requests", ->
     r('test').then (data, xhr) ->
       assert.equal xhr.status, 200
       done()
+
+# FormData adapter
+describe "FormData adapter", ->
+  withForm = (callback) ->
+    formHTML = """
+      <form id="test-form">
+        <input id="a" type="text" name="input[a]" value="Hello"></input>
+        <input id="b" type="text" name="input[b]" value="World"></input>
+        <button>Submit</button>
+      </form>
+    """
+    div = document.createElement('div')
+    div.innerHTML = formHTML
+    document.body.appendChild(div)
+    callback()
+    div.remove()
+
+  it "should setup a test form correctly", ->
+    withForm ->
+      a = document.getElementById('a')
+      b = document.getElementById('b')
+      assert.equal 'Hello', a.value
+      assert.equal 'World', b.value
+
+  it "should serialize form data correctly", (done) ->
+    http = new HTTPromise(type: 'formData')
+    withForm ->
+      request = http.post url('formdata'), document.getElementById('test-form')
+      request.then (data,xhr) ->
+        assert.equal xhr.status, 200
+        d = JSON.parse(xhr.response)
+        assert.equal "Hello", d.input.a
+        assert.equal "World", d.input.b
+        done()
+
+  it "should work with a form selector", (done) ->
+    http = new HTTPromise(type: 'formData')
+    withForm ->
+      request = http.post url('formdata'), '#test-form'
+      request.then (data,xhr) ->
+        assert.equal xhr.status, 200
+        d = JSON.parse(xhr.response)
+        assert.equal "Hello", d.input.a
+        assert.equal "World", d.input.b
+        done()
+

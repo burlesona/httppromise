@@ -27,6 +27,19 @@
           xhr: xhr
         };
       }
+    },
+    formData: {
+      encode: function(input) {
+        var form;
+        form = typeof input === 'string' ? document.querySelector(input) : input;
+        return new FormData(form);
+      },
+      parse: function(xhr) {
+        return {
+          data: xhr.response,
+          xhr: xhr
+        };
+      }
     }
   };
 
