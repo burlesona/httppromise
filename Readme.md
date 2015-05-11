@@ -1,5 +1,7 @@
 # HTTPromise
 
+*Version 1.0* (see changelog below)
+
 A concise, Promise-based HTTP Request (aka AJAX) library
 for your browser.
 
@@ -22,7 +24,7 @@ var http = new HTTPromise({type: 'json'}); // or just new HTTPromise;
 // Call an HTTP method and pass a URL!
 http.get('/whatever');
 
-// Holy shit that was easy. What about URL params?
+// Woah, that was easy. What about URL params?
 http.get('/whatever',{query: "how awesome is this?"});
 
 // Neato, but where do I put my callback?
@@ -56,7 +58,7 @@ http.patch(url,data)
 http.delete(url,data) // I guess you can send data with a delete request?
 http.request(method,url,data) // If you gotta be l33t
 
-// NOICE! and what methods are on the response object?
+// NICE! and what methods are on the response object?
 response = http.get('/whatever')
 response.then() // always happens
 response.success() // 200 status codes
@@ -137,14 +139,10 @@ I was bored, so, who knows.
 
 ## Compatibility
 
-I just wrote this in Chrome, I haven't tested other browsers yet.
-If I decide to actually use this someplace I'll test the other
-browsers at that point. In theory it should be awesome in Firefox,
-and should work in Safari and Opera and IE 11 with the Promise Polyfill,
-as well as whatever IE version added XmlHttpRequest rather than
-Microsoft's version.
+With the Promise Polyfill, this has been tested and works all the
+real browsers, plus Internet Explorer >= 9.0.
 
-For development and testing I use the polyfill from PromiseJS:
+This is the polyfill I use in my production environments:
 ```
 <script src="https://www.promisejs.org/polyfills/promise-6.1.0.min.js"></script>
 ```
@@ -153,4 +151,20 @@ For development and testing I use the polyfill from PromiseJS:
 
 HTTP Promise is distributed under the MIT License. Copyright (c) 2014 Andrew Burleson.
 
-PS, if you do something neat with it, I'd love to know :)
+PS, if you do something neat with it, I'd love to know. :)
+
+## Changelog
+
+*Version 1.0 (May 11, 2015)*
+- Start Versioning
+- Change error response to deliver consistent two argument return rather than a single object payload.
+
+*Version 0.x Part 2*
+- Add FormData request type
+
+*Version 0.x* (August 2014 - Feb 2014)
+- Write this
+- Test it
+- Use it in production
+- Love it
+- High-fives all around

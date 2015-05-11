@@ -21,8 +21,20 @@ describe "GET Requests", ->
       done()
 
   it "should trigger error on response not in 200 range", (done) ->
-    r('500').error (r) ->
+    r('500').error (data,xhr) ->
       assert true
+      done()
+
+  it "should return data, xhr for success", (done) ->
+    r().success (data,xhr) ->
+      assert data
+      assert xhr
+      done()
+
+  it "should return data, xhr for error", (done) ->
+    r('500').error (data,xhr) ->
+      assert data
+      assert xhr
       done()
 
   it "should send URL params", (done) ->

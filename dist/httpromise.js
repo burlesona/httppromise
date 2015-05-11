@@ -161,11 +161,11 @@
       var fulfill, reject;
       fulfill = function(r) {
         if (r.xhr.status < 200 || r.xhr.status >= 300) {
-          return fn(r);
+          return fn(r.data, r.xhr);
         }
       };
       reject = function(r) {
-        return fn(r);
+        return fn(r.data, r.xhr);
       };
       this.promise.then(fulfill, reject);
       return this;

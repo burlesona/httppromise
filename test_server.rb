@@ -34,8 +34,10 @@ post('/formdata') { json(params) }
 
 # Status Tests
 get('/204') { 204 }
-get('/500') { 500 }
-
+get('/500') do
+  status 500
+  json({error: "Something went wrong"})
+end
 # CORS Fun
 options('/*') {}
 

@@ -80,9 +80,12 @@ class Request
     this
 
   error: (fn) ->
+    # If the request returns a non 200 status, this is "fulfilled" but an error
     fulfill = (r) ->
-      fn(r) if r.xhr.status < 200 or r.xhr.status >= 300
+      fn(r.data, r.xhr) if r.xhr.status < 200 or r.xhr.status >= 300
+
+    # If the request is not fulfilled (errors etc.)
     reject = (r) ->
-      fn(r)
+      fn(r.data, r.xhr)
     @promise.then(fulfill,reject)
     this
