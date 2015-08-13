@@ -1,25 +1,29 @@
 # HTTPromise
 
-*Version 1.0* (see changelog below)
+*Version 1.1* (see changelog below)
 
 A concise, Promise-based HTTP Request (aka AJAX) library
 for your browser.
 
 Promises are great except when your browser doesn't support them.
-Thankfully, this can be fixed with a polyfill like this one:
+Thankfully, this can be fixed with a [polyfill](https://www.promisejs.org/)
+like this one:
 
-https://www.promisejs.org/polyfills/promise-4.0.0.js
+[https://www.promisejs.org/polyfills/promise-7.0.1.js](https://www.promisejs.org/polyfills/promise-7.0.1.js)
 
-I made this for fun, and I like it. Hooray!
+I made this for fun, and I like it. I've been using it in production for about a year,
+and it's been great. I keep it working nicely because I need it all the time, and if you
+use this and run into an issue I'll do my best to help you out.
 
-## Usage
+## Quick-Start
 
 Make requests like this:
 
 ```
-// You can pass a type option. For now, 'json' is the only option,
-// therefore you don't have to pass anything.
-var http = new HTTPromise({type: 'json'}); // or just new HTTPromise;
+// You can pass a type option. Default types are 'json' and 'formData'
+// 'json' is the default, therefore you don't have to pass anything.
+var http = new HTTPromise({type: 'json'});
+var http = new HTTPromise; // same thing.
 
 // Call an HTTP method and pass a URL!
 http.get('/whatever');
@@ -103,39 +107,98 @@ var http = new HTTPromise({type: 'formData'});
 http.post('/formdata','#my-form').then(function(data,xhr){console.log(data,xhr)});
 ```
 
-## Extension
+## Custom Request Formats
 
-I pretty much don't care about old browsers or XML. If you DO, then
-you could add a config object to define some other kind of request format.
-For instance:
+I'm keen on moving past old browsers, and not fond of XML. But if you want to tackle
+those beasts, you could easily add a new format aimed at them.
+
+To do this, you need to add a format property to the HTTPromiseRequestFormat object.
+A "format" needs properties: `headers`, `encode`, and `parse`.
+
+In the minimum case these can be no-ops. For instance:
 
 ```
-HTTPromiseFormat.xml = {
-  headers: {
-    'Content-Type':'application/xml',
-    'Accept':'application/xml'
-  },
-  encode: function(data) {
-    // make your data ready to send
-    return output;
-  },
-  parse: function(xhr) {
-    // read the server response here
-    return {data: myDataObject, xhr: xhr}
-  }
+HTTPPromiseFormat.nothin = {
+  headers: {},
+  encode: function(data) { return data; }
+  parse: function(xhr) { return xhr; }
 }
 ```
 
+In this case:
+
+1. There will be no headers on the request.
+
+2. Whatever you pass in as data will be be passed directly to the `XMLHttpRequest` instance's `send` method.
+
+3. The xhr response object will be returned to your promises as-is.
+
+This all happens in the HTTPPromise Request object's constructor, and is pretty straightforward,
+so please just check the source code to see the default types and what all happens under the hood,
+then feel free to extend this however you like.
+
+## Per-Instance Headers
+
+In addition to the `type` option, you can also pass a `headers` option to the HTTPromise constructor.
+For example:
+
+```js
+var http = new HTTPromise({type:'json',headers:{'X-Client-ID':'cl_6251523'}})
+```
+
+If you pass the `headers` option it must be an object where they keys and values represent headers.
+
+These headers will be added to the default headers for the request format you're using.
+
+## About the X-HTTP-Requested-With Header
+
+The [X-HTTP-Requested-With](https://en.wikipedia.org/wiki/List_of_HTTP_header_fields#Common_non-standard_request_fields)
+header is non-standard but used by jQuery and therefore ubiquitous. This means a lot of server-side libraries
+and frameworks, such as Ruby's Rack framework, provide convenience methods for checking this header,
+and a lot of code relies on these convenience methods to determine if a request is "ajax" or not.
+
+Since this header is not standard, the browsers don't set it, and neither does HTTPromise. But that means
+that if you are, for example, using a ruby rack-based webserver and you write a method like this:
+
+```ruby
+if request.xhr?
+  # send some json
+else
+  # send some html
+```
+
+... then HTTPromise is going to get the HTML by default, which may surprise you.
+
+You have two choices here:
+
+1. Check for the request "Accept" header instead. Since your JSON requests should
+   not accept HTML, your server should not send HTML. This is the standards-compliant
+   way to go, and it's what I do.
+
+2. Add the `X-HTTP-Requested-With` header to your requests. This will make your
+   requests look more like they come from jQuery, which will make more server frameworks
+   recognize them as ajax "automatically." Personally, I think this is not as good
+   of a solution, but it is probably an easier "hack" for many systems.
+
+If you want to add this header to all requests from a particular HTTPromise instance,
+just pass it into the constructor:
+
+```js
+var http = new HTTPromise({type:'json',headers:{'X-HTTP-Requested-With':'XMLHttpRequest'})
+```
+
+
+
 ## Development / Testing
 
-The docs are in JS, just because. I wrote this in CoffeeScript,
-which I personally like better. You'll need TestEm installed to
-build/run the project, because using the test runner as a sort of
-build-tool has the nice side effect of making it a lot harder to
-skip writing tests. You'll also want to run the little sinatra app
-that's attached so you have something to send test requests too.
-I might redo that in Node later but, I built this one night when
-I was bored, so, who knows.
+The docs are in JS and the distribution is as well.
+I wrote this library in CoffeeScript, which I personally like better.
+You'll need [TestEm](https://github.com/airportyh/testem) installed
+to build/run the project, because using the test runner as a sort of
+build-tool has the nice side effect of making it a lot harder to skip
+writing tests. You'll also want to run the little sinatra app that's
+attached so you have something to send test requests too. I might redo
+that in Node later, but who knows...
 
 ## Compatibility
 
@@ -144,16 +207,23 @@ real browsers, plus Internet Explorer >= 9.0.
 
 This is the polyfill I use in my production environments:
 ```
-<script src="https://www.promisejs.org/polyfills/promise-6.1.0.min.js"></script>
+<script src="https://www.promisejs.org/polyfills/promise-7.0.1.min.js"></script>
 ```
 
 ## License
 
-HTTP Promise is distributed under the MIT License. Copyright (c) 2014 Andrew Burleson.
+HTTP Promise is distributed under the MIT License.
+Copyright (c) 2014-2015 Andrew Burleson.
 
-PS, if you do something neat with it, I'd love to know. :)
+PS, if you do something neat with it, I'd love to know. You can open an issue
+on this repo to tell me about it, and I might even feature your project on
+the readme :)
 
 ## Changelog
+
+*Version 1.1 (August 13, 2015)*
+- Add config option to set request headers per instance
+- Update development dependencies
 
 *Version 1.0 (May 11, 2015)*
 - Start Versioning

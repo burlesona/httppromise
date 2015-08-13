@@ -46,13 +46,11 @@ describe "Configuration", ->
   it "should configurable to add a header", (done) ->
     http = new HTTPromise(headers:{'X-Requested-With': 'XMLHttpRequest'})
     http.get(url('/xhr')).then (data, xhr) ->
-      console.log xhr
       assert.equal 200, xhr.status
       done()
 
   it "should give a useful error message with improper header", (done) ->
     http = new HTTPromise(headers:'XMLHttpRequest')
-    console.log "config:",http.config
     test = -> http.get(url('/xhr'))
     assert.throws(test,TypeError)
     done()
