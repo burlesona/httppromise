@@ -16,7 +16,7 @@ end
 before do
   headers "Access-Control-Allow-Origin" => "*"
   headers "Access-Control-Allow-Methods" => "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-  headers "Access-Control-Allow-Headers" => "Accept, Content-Type"
+  headers "Access-Control-Allow-Headers" => "Accept, Content-Type, X-Requested-With"
 end
 
 # Sandbox Page
@@ -38,6 +38,10 @@ get('/500') do
   status 500
   json({error: "Something went wrong"})
 end
+
+# XHR Recognition Test
+get('/xhr') { request.xhr? ? 200 : 400 }
+
 # CORS Fun
 options('/*') {}
 

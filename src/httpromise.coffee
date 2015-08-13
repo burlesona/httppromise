@@ -25,7 +25,7 @@ root.HTTPromiseFormat =
 class root.HTTPromise
   constructor: (config = {}) ->
     @config = config
-    @type = config.type or 'json'
+    @config.type or= 'json'
 
   get: (url,params) ->
     if params
@@ -41,11 +41,14 @@ class root.HTTPromise
   delete: (url,data) -> @request 'delete', url, data
 
   request: (method,url,data) ->
-    new Request @type, method, url, data
+    new Request @config, method, url, data
 
 class Request
-  constructor: (type,method,url,data) ->
-    format = HTTPromiseFormat[type]
+  constructor: (config,method,url,data) ->
+    format = HTTPromiseFormat[config.type]
+    if config.headers? and typeof config.headers isnt "object"
+      throw new TypeError("If given, headers must an object where each key value pair represents a request header")
+
     @promise = new Promise (fulfill,reject) ->
       request = new XMLHttpRequest
       request.onload = ->
@@ -59,8 +62,14 @@ class Request
       request.open method.toUpperCase(), url, true
       for k,v of format.headers
         request.setRequestHeader(k,v)
+
+      if config.headers
+        for k,v of config.headers
+          request.setRequestHeader(k,v)
+
       if data
         request.send format.encode(data)
+
       else
         request.send()
 
