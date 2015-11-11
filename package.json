@@ -1,6 +1,6 @@
 {
   "name": "httppromise",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A concise, promise-based HTTP Request library for your browser.",
   "main": "dist/httpromise.js",
   "directories": {

@@ -1,6 +1,6 @@
 # HTTPromise
 
-*Version 1.1* (see changelog below)
+*Version 1.1.1* (see changelog below)
 
 A concise, Promise-based HTTP Request (aka AJAX) library
 for your browser.
@@ -220,6 +220,10 @@ on this repo to tell me about it, and I might even feature your project on
 the readme :)
 
 ## Changelog
+
+*Version 1.1.1 (November 11, 2015)*
+- Merge PR from Travis Nesland to fix issue of HTTPromiseRequestFormat not being found when lib is loaded through NPM.
+- Update dist and package.json
 
 *Version 1.1 (August 13, 2015)*
 - Add config option to set request headers per instance
