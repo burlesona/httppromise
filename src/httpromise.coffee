@@ -45,7 +45,7 @@ class root.HTTPromise
 
 class Request
   constructor: (config,method,url,data) ->
-    format = HTTPromiseFormat[config.type]
+    format = root.HTTPromiseFormat[config.type]
     if config.headers? and typeof config.headers isnt "object"
       throw new TypeError("If given, headers must an object where each key value pair represents a request header")
 
