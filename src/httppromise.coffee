@@ -1,6 +1,4 @@
-root = exports ? this
-
-root.HTTPromiseFormat =
+RequestFormat =
   json:
     headers:
       'Content-Type':'application/json'
@@ -22,7 +20,12 @@ root.HTTPromiseFormat =
     parse: (xhr) ->
       {data: xhr.response, xhr: xhr}
 
-class root.HTTPromise
+class HttpPromise
+  @format: (name) ->
+    RequestFormat[name]
+  @setFormat: (name,options) ->
+    RequestFormat[name] = options
+
   constructor: (config = {}) ->
     @config = config
     @config.type or= 'json'
@@ -45,7 +48,7 @@ class root.HTTPromise
 
 class Request
   constructor: (config,method,url,data) ->
-    format = root.HTTPromiseFormat[config.type]
+    format = RequestFormat[config.type]
     if config.headers? and typeof config.headers isnt "object"
       throw new TypeError("If given, headers must an object where each key value pair represents a request header")
 
@@ -98,3 +101,9 @@ class Request
       fn(r.data, r.xhr)
     @promise.then(fulfill,reject)
     this
+
+# Module Exports or define on window
+if exports?
+  exports = HttpPromise
+else
+  window.HttpPromise = HttpPromise

@@ -2,7 +2,7 @@ assert = chai.assert
 url = (path) -> "http://localhost:4567/#{path}"
 
 describe "GET Requests", ->
-  http = new HTTPromise
+  http = new HttpPromise
   r = (path="test",params) -> http.get(url(path),params)
 
   it "should get '/test'", (done) ->
@@ -44,20 +44,20 @@ describe "GET Requests", ->
 
 describe "Configuration", ->
   it "should configurable to add a header", (done) ->
-    http = new HTTPromise(headers:{'X-Requested-With': 'XMLHttpRequest'})
+    http = new HttpPromise(headers:{'X-Requested-With': 'XMLHttpRequest'})
     http.get(url('/xhr')).then (data, xhr) ->
       assert.equal 200, xhr.status
       done()
 
   it "should give a useful error message with improper header", (done) ->
-    http = new HTTPromise(headers:'XMLHttpRequest')
+    http = new HttpPromise(headers:'XMLHttpRequest')
     test = -> http.get(url('/xhr'))
     assert.throws(test,TypeError)
     done()
 
 
 describe "POST Requests", ->
-  http = new HTTPromise
+  http = new HttpPromise
   r = (path="test",data) -> http.post(url(path),data)
 
   it "should send URL params", (done) ->
@@ -66,7 +66,7 @@ describe "POST Requests", ->
       done()
 
 describe "PUT Requests", ->
-  http = new HTTPromise
+  http = new HttpPromise
   r = (path="test",data) -> http.put(url(path),data)
 
   it "should send URL params", (done) ->
@@ -75,7 +75,7 @@ describe "PUT Requests", ->
       done()
 
 describe "PATCH Requests", ->
-  http = new HTTPromise
+  http = new HttpPromise
   r = (path="test",data) -> http.patch(url(path),data)
 
   it "should send URL params", (done) ->
@@ -84,7 +84,7 @@ describe "PATCH Requests", ->
       done()
 
 describe "DELETE Requests", ->
-  http = new HTTPromise
+  http = new HttpPromise
   r = (path="test",data) -> http.delete(url(path),data)
 
   it "should delete stuff", (done) ->
@@ -116,7 +116,7 @@ describe "FormData adapter", ->
       assert.equal 'World', b.value
 
   it "should serialize form data correctly", (done) ->
-    http = new HTTPromise(type: 'formData')
+    http = new HttpPromise(type: 'formData')
     withForm ->
       request = http.post url('formdata'), document.getElementById('test-form')
       request.then (data,xhr) ->
@@ -127,7 +127,7 @@ describe "FormData adapter", ->
         done()
 
   it "should work with a form selector", (done) ->
-    http = new HTTPromise(type: 'formData')
+    http = new HttpPromise(type: 'formData')
     withForm ->
       request = http.post url('formdata'), '#test-form'
       request.then (data,xhr) ->
@@ -137,3 +137,9 @@ describe "FormData adapter", ->
         assert.equal "World", d.input.b
         done()
 
+# Formats as private implementation detail
+describe "Formats", ->
+  it "should setup a test form correctly", ->
+    fmt = HttpPromise.format('json')
+    assert.equal 'application/json', fmt.headers['Content-Type']
+    assert.equal 'application/json', fmt.headers['Accept']

@@ -56,10 +56,7 @@ __END__
   <body>
     <p>HTTP Request Test Page</p>
     <script src="https://www.promisejs.org/polyfills/promise-6.1.0.min.js"></script>
-    <script src="httpromise.js"></script>
-    <script>
-      h = new HTTPromise
-    </script>
+    <script src="httppromise.js"></script>
     <form id="test">
       <label for="a">Test</label>
       <input id="a" name="a" type="text" value="hello">

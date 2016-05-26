@@ -1,6 +1,6 @@
-# HTTPromise
+# HttpPromise
 
-*Version 1.1.1* (see changelog below)
+*Version 2.0* (see changelog below)
 
 A concise, Promise-based HTTP Request (aka AJAX) library
 for your browser.
@@ -11,9 +11,22 @@ like this one:
 
 [https://www.promisejs.org/polyfills/promise-7.0.1.js](https://www.promisejs.org/polyfills/promise-7.0.1.js)
 
-I made this for fun, and I like it. I've been using it in production for about a year,
+I made this for fun, and I really like it. I've been using it in production for several years,
 and it's been great. I keep it working nicely because I need it all the time, and if you
 use this and run into an issue I'll do my best to help you out.
+
+
+## Note on 2.0
+
+This used to be called `HTTPromise`, which is *much* better. But NPM.
+
+So, now it's called `HttpPromise` because nobody had taken that spelling.
+Bastards.
+
+Anyway, renaming the core class is obviously a breaking change, so I
+went ahead and made some more NPM naming friendly changes for this 2.0
+release. The core features are identical, the only thing that changed is
+how you set custom request formats. See examples below.
 
 ## Quick-Start
 
@@ -75,6 +88,20 @@ http.takesBow()
 // ^ lol that's not a real function don't try calling it.
 ```
 
+## With NPM / Browserify etc.
+
+If you're using NPM + Browserify, cheers, me too. If you're using one of the million
+other flavors of JS package management... well, good for you. I wish we could all
+just agree on how to do this thing, right?
+
+In any case, via Browserify it works like this:
+
+```
+var HttpPromise = require('httppromise')
+```
+
+Done.
+
 ## Built-In Types
 
 HTTPromise knows about two kinds of requests by default: JSON and FormData.
@@ -112,17 +139,17 @@ http.post('/formdata','#my-form').then(function(data,xhr){console.log(data,xhr)}
 I'm keen on moving past old browsers, and not fond of XML. But if you want to tackle
 those beasts, you could easily add a new format aimed at them.
 
-To do this, you need to add a format property to the HTTPromiseRequestFormat object.
+To do this, you need to add a format to HTTPromise.
 A "format" needs properties: `headers`, `encode`, and `parse`.
 
 In the minimum case these can be no-ops. For instance:
 
 ```
-HTTPPromiseFormat.nothin = {
+HTTPromise.setFormat('noop',{
   headers: {},
   encode: function(data) { return data; }
   parse: function(xhr) { return xhr; }
-}
+});
 ```
 
 In this case:
@@ -133,7 +160,7 @@ In this case:
 
 3. The xhr response object will be returned to your promises as-is.
 
-This all happens in the HTTPPromise Request object's constructor, and is pretty straightforward,
+This all happens in the HTTPromise Request object's constructor, and is pretty straightforward,
 so please just check the source code to see the default types and what all happens under the hood,
 then feel free to extend this however you like.
 
@@ -220,6 +247,14 @@ on this repo to tell me about it, and I might even feature your project on
 the readme :)
 
 ## Changelog
+*Version 2.0.0 (May 26, 2016)*
+- Goodbye HTTPromise, hello HttpPromise. Because names.
+- Goodybe HTTPromiseRequestFormat, hello HttpPromise.setFormat()
+- Per semver standards, this is a potentially breaking change for old code
+  so I'm bumping to 2.0.0
+- I've added a minify step on the testem build. This is a super non-traditional
+  way of building a distro but it makes me run the tests always for every build
+  in a very noisy way, which I adore. So, there's that.
 
 *Version 1.1.1 (November 11, 2015)*
 - Merge PR from Travis Nesland to fix issue of HTTPromiseRequestFormat not being found when lib is loaded through NPM.

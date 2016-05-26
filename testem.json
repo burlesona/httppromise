@@ -12,5 +12,5 @@
     "test/lib/chai.js",
     "test/compiled/*.js"
   ],
-  "on_exit": "rm -rf test/compiled"
+  "on_exit": "rm -rf test/compiled && uglifyjs dist/httppromise.js -o dist/httppromise.min.js"
 }
