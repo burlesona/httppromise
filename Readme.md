@@ -1,6 +1,6 @@
 # HttpPromise
 
-*Version 2.0* (see changelog below)
+**Version 2.0.1** (see changelog below)
 
 A concise, Promise-based HTTP Request (aka AJAX) library
 for your browser.
@@ -32,7 +32,7 @@ how you set custom request formats. See examples below.
 
 Make requests like this:
 
-```
+```js
 // You can pass a type option. Default types are 'json' and 'formData'
 // 'json' is the default, therefore you don't have to pass anything.
 var http = new HTTPromise({type: 'json'});
@@ -96,7 +96,7 @@ just agree on how to do this thing, right?
 
 In any case, via Browserify it works like this:
 
-```
+```js
 var HttpPromise = require('httppromise')
 ```
 
@@ -108,7 +108,7 @@ HTTPromise knows about two kinds of requests by default: JSON and FormData.
 If you don't specify a type, JSON is the default. You can make FormData requests
 like so:
 
-```
+```js
 var http = new HTTPromise({type: 'formData'});
 var form = document.getElementById('my-form');
 http.post('/formdata',form).then(function(data,xhr){console.log(data,xhr)});
@@ -144,7 +144,7 @@ A "format" needs properties: `headers`, `encode`, and `parse`.
 
 In the minimum case these can be no-ops. For instance:
 
-```
+```js
 HTTPromise.setFormat('noop',{
   headers: {},
   encode: function(data) { return data; }
@@ -233,7 +233,7 @@ With the Promise Polyfill, this has been tested and works all the
 real browsers, plus Internet Explorer >= 9.0.
 
 This is the polyfill I use in my production environments:
-```
+```html
 <script src="https://www.promisejs.org/polyfills/promise-7.0.1.min.js"></script>
 ```
 
