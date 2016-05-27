@@ -247,6 +247,9 @@ on this repo to tell me about it, and I might even feature your project on
 the readme :)
 
 ## Changelog
+*Version 2.0.1 (May 27, 2016)*
+- Fix a stupid typo that made Browserify require global
+
 *Version 2.0.0 (May 26, 2016)*
 - Goodbye HTTPromise, hello HttpPromise. Because names.
 - Goodybe HTTPromiseRequestFormat, hello HttpPromise.setFormat()

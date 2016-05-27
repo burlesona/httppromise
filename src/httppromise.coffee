@@ -103,7 +103,7 @@ class Request
     this
 
 # Module Exports or define on window
-if exports?
-  exports = HttpPromise
+if module?
+  module.exports = HttpPromise
 else
   window.HttpPromise = HttpPromise
