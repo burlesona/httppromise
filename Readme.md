@@ -1,6 +1,6 @@
 # HttpPromise
 
-**Version 2.0.1** (see changelog below)
+**Version 2.1.0** (see changelog below)
 
 A concise, Promise-based HTTP Request (aka AJAX) library
 for your browser.
@@ -20,8 +20,7 @@ use this and run into an issue I'll do my best to help you out.
 
 This used to be called `HTTPromise`, which is *much* better. But NPM.
 
-So, now it's called `HttpPromise` because nobody had taken that spelling.
-Bastards.
+So, now it's called `HttpPromise` because nobody had taken that spelling. Le Sigh.
 
 Anyway, renaming the core class is obviously a breaking change, so I
 went ahead and made some more NPM naming friendly changes for this 2.0
@@ -35,8 +34,8 @@ Make requests like this:
 ```js
 // You can pass a type option. Default types are 'json' and 'formData'
 // 'json' is the default, therefore you don't have to pass anything.
-var http = new HTTPromise({type: 'json'});
-var http = new HTTPromise; // same thing.
+var http = new HttpPromise({type: 'json'});
+var http = new HttpPromise; // same thing.
 
 // Call an HTTP method and pass a URL!
 http.get('/whatever');
@@ -104,12 +103,12 @@ Done.
 
 ## Built-In Types
 
-HTTPromise knows about two kinds of requests by default: JSON and FormData.
+HttpPromise knows about two kinds of requests by default: JSON and FormData.
 If you don't specify a type, JSON is the default. You can make FormData requests
 like so:
 
 ```js
-var http = new HTTPromise({type: 'formData'});
+var http = new HttpPromise({type: 'formData'});
 var form = document.getElementById('my-form');
 http.post('/formdata',form).then(function(data,xhr){console.log(data,xhr)});
 ```
@@ -130,7 +129,7 @@ Example HTML
 Example JS
 
 ```js
-var http = new HTTPromise({type: 'formData'});
+var http = new HttpPromise({type: 'formData'});
 http.post('/formdata','#my-form').then(function(data,xhr){console.log(data,xhr)});
 ```
 
@@ -139,13 +138,13 @@ http.post('/formdata','#my-form').then(function(data,xhr){console.log(data,xhr)}
 I'm keen on moving past old browsers, and not fond of XML. But if you want to tackle
 those beasts, you could easily add a new format aimed at them.
 
-To do this, you need to add a format to HTTPromise.
+To do this, you need to add a format to HttpPromise.
 A "format" needs properties: `headers`, `encode`, and `parse`.
 
 In the minimum case these can be no-ops. For instance:
 
 ```js
-HTTPromise.setFormat('noop',{
+HttpPromise.setFormat('noop',{
   headers: {},
   encode: function(data) { return data; }
   parse: function(xhr) { return xhr; }
@@ -160,17 +159,17 @@ In this case:
 
 3. The xhr response object will be returned to your promises as-is.
 
-This all happens in the HTTPromise Request object's constructor, and is pretty straightforward,
+This all happens in the HttpPromise Request object's constructor, and is pretty straightforward,
 so please just check the source code to see the default types and what all happens under the hood,
 then feel free to extend this however you like.
 
 ## Per-Instance Headers
 
-In addition to the `type` option, you can also pass a `headers` option to the HTTPromise constructor.
+In addition to the `type` option, you can also pass a `headers` option to the HttpPromise constructor.
 For example:
 
 ```js
-var http = new HTTPromise({type:'json',headers:{'X-Client-ID':'cl_6251523'}})
+var http = new HttpPromise({type:'json',headers:{'X-Client-ID':'cl_6251523'}})
 ```
 
 If you pass the `headers` option it must be an object where they keys and values represent headers.
@@ -184,7 +183,7 @@ header is non-standard but used by jQuery and therefore ubiquitous. This means a
 and frameworks, such as Ruby's Rack framework, provide convenience methods for checking this header,
 and a lot of code relies on these convenience methods to determine if a request is "ajax" or not.
 
-Since this header is not standard, the browsers don't set it, and neither does HTTPromise. But that means
+Since this header is not standard, the browsers don't set it, and neither does HttpPromise. But that means
 that if you are, for example, using a ruby rack-based webserver and you write a method like this:
 
 ```ruby
@@ -194,7 +193,7 @@ else
   # send some html
 ```
 
-... then HTTPromise is going to get the HTML by default, which may surprise you.
+... then HttpPromise is going to get the HTML by default, which may surprise you.
 
 You have two choices here:
 
@@ -207,11 +206,11 @@ You have two choices here:
    recognize them as ajax "automatically." Personally, I think this is not as good
    of a solution, but it is probably an easier "hack" for many systems.
 
-If you want to add this header to all requests from a particular HTTPromise instance,
+If you want to add this header to all requests from a particular HttpPromise instance,
 just pass it into the constructor:
 
 ```js
-var http = new HTTPromise({type:'json',headers:{'X-HTTP-Requested-With':'XMLHttpRequest'})
+var http = new HttpPromise({type:'json',headers:{'X-HTTP-Requested-With':'XMLHttpRequest'})
 ```
 
 
@@ -247,12 +246,17 @@ on this repo to tell me about it, and I might even feature your project on
 the readme :)
 
 ## Changelog
+
+*Version 2.1.0 (September 20, 2017)*
+- Add a passthrough .catch method for compatibility with
+  the Promise interface.
+
 *Version 2.0.1 (May 27, 2016)*
 - Fix a stupid typo that made Browserify require global
 
 *Version 2.0.0 (May 26, 2016)*
-- Goodbye HTTPromise, hello HttpPromise. Because names.
-- Goodybe HTTPromiseRequestFormat, hello HttpPromise.setFormat()
+- Goodbye HttpPromise, hello HttpPromise. Because names.
+- Goodybe HttpPromiseRequestFormat, hello HttpPromise.setFormat()
 - Per semver standards, this is a potentially breaking change for old code
   so I'm bumping to 2.0.0
 - I've added a minify step on the testem build. This is a super non-traditional
@@ -260,7 +264,7 @@ the readme :)
   in a very noisy way, which I adore. So, there's that.
 
 *Version 1.1.1 (November 11, 2015)*
-- Merge PR from Travis Nesland to fix issue of HTTPromiseRequestFormat not being found when lib is loaded through NPM.
+- Merge PR from Travis Nesland to fix issue of HttpPromiseRequestFormat not being found when lib is loaded through NPM.
 - Update dist and package.json
 
 *Version 1.1 (August 13, 2015)*

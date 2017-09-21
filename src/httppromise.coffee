@@ -81,6 +81,10 @@ class Request
       fn(r.data, r.xhr)
     this
 
+  catch: (fn) ->
+    @promise.catch(fn)
+    this
+
   when: (status,fn) ->
     @promise.then (r) ->
       fn(r.data, r.xhr) if r.xhr.status is status

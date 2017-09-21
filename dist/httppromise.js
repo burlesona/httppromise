@@ -156,6 +156,11 @@
       return this;
     };
 
+    Request.prototype["catch"] = function(fn) {
+      this.promise["catch"](fn);
+      return this;
+    };
+
     Request.prototype.when = function(status, fn) {
       this.promise.then(function(r) {
         if (r.xhr.status === status) {
